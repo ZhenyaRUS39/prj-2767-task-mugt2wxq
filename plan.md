@@ -1,53 +1,11 @@
-# Plan: prj-2767-task-mugt2wxq
+# Plan: task-mugt2wxq
 
-**Project:** `prj-2767-task-mugt2wxq`  
+**Project:** `PRJ-8085`  
 **Task ID:** `task-mugt2wxq`  
 **Repo:** `prj-2767-task-mugt2wxq`  
-
-## Summary
-
-Декомпозиция задачи «Сделай парсер логов nginx v2»: разбиваю на 4 субтаска — проектирование парсера (Go-библ. с access/error), CLI/утилита с фильтрами, юнит-тесты + golden-фикстуры, e2e-тест на реальных логах.
+**Progress:** 0/0 subtasks done
 
 ## Subtasks
-
-### 1. Спроектировать модуль парсера access/error
-
-- **ID:** `sub-1`
-- **Profile:** `20razrab1`
-- **Tester:** `TBD`
-- **Status:** `pending`
-- **Description:** Создать Go-пакет nginxlog: интерфейсы AccessLogParser, ErrorLogParser, структуры AccessLogEntry/ErrorLogEntry (поля по стандартному combined-формату и error_log). Поддержка кастомных log_format через regexp-шаблон, парсинг через bufio.Scanner, опции через functional options (WithBufferSize, WithTimezone, WithFormat).
-- **Test plan:** go build ./... без ошибок; godoc на экспортируемых типах читается; go vet чистый.
-
-### 2. Реализовать CLI-утилиту с фильтрами
-
-- **ID:** `sub-2`
-- **Profile:** `30razrab2`
-- **Tester:** `TBD`
-- **Status:** `pending`
-- **Description:** Бинарь cmd/ngxlog: подкоманды parse, top (top N IP/URL/status), errors. Флаги --follow (-f), --since/--until (time-range), --filter-status, --filter-path-regex, --json-output. Потоковая обработка через channels, без загрузки всего файла в память. Обработка rotation (inode-trick) для follow.
-- **Test plan:** ngxlog parse --filter-status=404 access.log выводит только 404; ngxlog top --limit=10 выводит топ-10 URL; ngxlog -f читает новые записи в реальном времени (тест через echo-строки в fifo).
-- **Dependencies:** `sub-1`
-
-### 3. Юнит-тесты + golden-фикстуры
-
-- **ID:** `sub-3`
-- **Profile:** `20razrab1`
-- **Tester:** `TBD`
-- **Status:** `pending`
-- **Description:** Покрытие тестами ≥80%: table-driven тесты на access.log combined + JSON-формат, error.log всех уровней, malformed-строк, кастомный формат. Golden-фикстуры в testdata/*.golden.json. Benchmark на 100k строк. Property-based тест для round-trip (parse→format→parse).
-- **Test plan:** go test -race -cover ./... показывает ≥80% покрытие; go test -bench=. -benchmem показывает аллокации; make update-golden и make test проходят идемпотентно.
-- **Dependencies:** `sub-1`, `sub-2`
-
-### 4. E2E-тест + CI на реальных логах
-
-- **ID:** `sub-4`
-- **Profile:** `30razrab2`
-- **Tester:** `TBD`
-- **Status:** `pending`
-- **Description:** Интеграционный тест scripts/e2e.sh: генерирует 1M строк синтетического nginx-лога, запускает бинарь, проверяет exit code, валидирует JSON-выход jq. GitHub Actions workflow (.github/workflows/ci.yml): lint (golangci-lint), test, build, bench. README с примерами использования и бейджем CI.
-- **Test plan:** bash scripts/e2e.sh exit 0; gh workflow run ci проходит зелёным; README рендерится корректно с примерами; релизный бинарь собирается под linux/amd64 и linux/arm64.
-- **Dependencies:** `sub-2`, `sub-3`
 
 
 ---
